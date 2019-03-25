@@ -12,7 +12,7 @@
 
 COMPILER		= gcc
 
-CC_FLAGS		= -Wall -Werror -Wextra -fsanitize=address
+CC_FLAGS		= -Wall -Werror -Wextra
 
 all : Colleen Grace Sully
 
@@ -30,6 +30,8 @@ Sully: Sully.c
 
 clean:
 	rm -rf Colleen Grace Sully
+	rm -rf `ls | grep Sully_`
+	rm -rf `ls | grep .dSYM`
 
 fclean: clean
 
