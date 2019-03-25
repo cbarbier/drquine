@@ -6,7 +6,7 @@
 #define SRC sprintf(src, "Sully_%d.c", i)
 #define CMD sprintf(cmd, "gcc -Wall -Wextra -Werror %1$s -o %2$s && ./%2$s", src, exe)
 #define FT() int main(){\
-    int i = 5;\
+    int i = 3;\
     char *p;\
     p = strrchr(getenv("_"), '/');\
     for(size_t i=0;i<strlen(p);i++)p[i] = tolower(p[i]);\
