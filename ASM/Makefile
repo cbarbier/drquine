@@ -10,25 +10,28 @@
 #                                                                              #
 # **************************************************************************** #
 
-COMPILER		= /Users/cbarbier/.brew/Cellar/nasm/2.14.02/bin/nasm
+NASM		= /Users/cbarbier/.brew/Cellar/nasm/2.14.02/bin/nasm
+NASM		= nasm
 
-FLAGS			= -f macho64
+FLAGS		= -f macho64
+
+LOADER		= ld -macosx_version_min 10.8 -lSystem
 
 all : Colleen Grace Sully
 
 %.o : %.s
-	$(COMPILER) $(FLAGS) $< -o $@ 
+	$(NASM) $(FLAGS) $< -o $@ 
 
 Colleen: Colleen.o
-	ld $< -o $@
+	$(LOADER) $< -o $@
 	@echo "$@ built\t\t\033[0;32m✓\033[0m"
 
 Grace: Grace.o
-	ld $< -o $@
+	$(LOADER) $< -o $@
 	@echo "$@ built\t\t\033[0;32m✓\033[0m"
 
 Sully: Sully.o
-	ld $< -o $@
+	$(LOADER) $< -o $@
 	@echo "$@ built\t\t\033[0;32m✓\033[0m"
 
 clean:
