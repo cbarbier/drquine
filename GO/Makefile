@@ -6,14 +6,13 @@
 #    By: cbarbier <cbarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/04 11:00:31 by fmaury            #+#    #+#              #
-#    Updated: 2019/03/25 17:57:17 by cbarbier         ###   ########.fr        #
+#    Updated: 2019/03/26 14:33:16 by cbarbier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 COMPILER		= go build
 
 all : Colleen Grace Sully
-
 Colleen: Colleen.go
 	$(COMPILER) $<
 	@echo "$@ built\t\t\033[0;32m✓\033[0m"

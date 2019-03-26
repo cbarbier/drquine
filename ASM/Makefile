@@ -6,32 +6,38 @@
 #    By: cbarbier <cbarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/04 11:00:31 by fmaury            #+#    #+#              #
-#    Updated: 2019/03/21 15:35:34 by cbarbier         ###   ########.fr        #
+#    Updated: 2019/03/26 14:57:06 by cbarbier         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-COMPILER		= gcc
+COMPILER		= /Users/cbarbier/.brew/Cellar/nasm/2.14.02/bin/nasm
 
-CC_FLAGS		= -Wall -Werror -Wextra
+FLAGS			= -f macho64
 
 all : Colleen Grace Sully
 
-Colleen: Colleen.c
-	$(COMPILER) $(CC_FLAGS) $< -o $@
-	@echo "Colleen built $@\t\t\033[0;32m✓\033[0m"
+%.o : %.s
+	$(COMPILER) $(FLAGS) $< -o $@ 
 
-Grace: Grace.c
-	$(COMPILER) $(CC_FLAGS) $< -o $@
-	@echo "Grace built $@\t\t\033[0;32m✓\033[0m"
+Colleen: Colleen.o
+	ld $< -o $@
+	@echo "$@ built\t\t\033[0;32m✓\033[0m"
 
-Sully: Sully.c
-	$(COMPILER) $(CC_FLAGS) $< -o $@
-	@echo "Sully built $@\t\t\033[0;32m✓\033[0m"
+Grace: Grace.o
+	ld $< -o $@
+	@echo "$@ built\t\t\033[0;32m✓\033[0m"
+
+Sully: Sully.o
+	ld $< -o $@
+	@echo "$@ built\t\t\033[0;32m✓\033[0m"
 
 clean:
-	rm -rf Colleen Grace Sully
+	rm -rf  `ls | grep "\.o"`
 
 fclean: clean
+	rm -rf Colleen Grace Sully Grace_kid.s
+	rm -rf `ls | grep Sully_`
+	rm -rf `ls | grep .dSYM`
 
 re: fclean all
 
