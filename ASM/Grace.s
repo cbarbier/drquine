@@ -1,42 +1,43 @@
+section .data
+    fmt db "section .data%1$c    fmt db %2$c%3$s%2$c, 0%1$c    mode db %2$cw+%2$c, 0%1$c    file db %2$cGrace_kid.s%2$c, 0%1$c    error_mess db %2$ceroor%2$c, 10, 0%1$c    %%DEFINE A 10%1$c    %%DEFINE B 34%1$c%%MACRO GRACE 1%1$csection .text%1$c    global _main%1$c    extern	_fprintf%1$c    extern	_fopen%1$c    extern	_fclose%1$c_main:%1$c    enter 16, 0%1$c    lea rdi, [rel file]%1$c    lea rsi, [rel mode]%1$c    call _fopen%1$c    mov rdi, rax%1$c    mov qword[rbp+32], rax%1$c    cmp rax, 0%1$c    je error%1$c    lea rsi, [rel fmt]%1$c    mov rdx, A%1$c    mov rcx, B%1$c    lea r8, [rel fmt] %1$c    call _fprintf%1$c    mov rdi, [rbp+32]%1$c    call _fclose%1$c    leave%1$c    ret%1$cerror:%1$c    mov rax, 0x02000004 ;write%1$c    mov rdi, 1%1$c    lea rsi, [rel error_mess]%1$c    mov rdx, 6%1$c    syscall%1$c    ret%1$c;%1$c;comment1%1$c;%1$c%%ENDMACRO%1$cGRACE(∆)", 0
+    mode db "w+", 0
+    file db "Grace_kid.s", 0
+    error_mess db "eroor", 10, 0
+    %DEFINE A 10
+    %DEFINE B 34
+%MACRO GRACE 1
+section .text
+    global _main
+    extern	_fprintf
+    extern	_fopen
+    extern	_fclose
+_main:
+    enter 16, 0
+    lea rdi, [rel file]
+    lea rsi, [rel mode]
+    call _fopen
+    mov rdi, rax
+    mov qword[rbp+32], rax
+    cmp rax, 0
+    je error
+    lea rsi, [rel fmt]
+    mov rdx, A
+    mov rcx, B
+    lea r8, [rel fmt] 
+    call _fprintf
+    mov rdi, [rbp+32]
+    call _fclose
+    leave
+    ret
+error:
+    mov rax, 0x02000004 ;write
+    mov rdi, 1
+    lea rsi, [rel error_mess]
+    mov rdx, 6
+    syscall
+    ret
 ;
 ;comment1
 ;
-SECTION .data
-filename db "Grace_kid.s", 0
-mode     db "w+", 0
-txt     db "mama it works %u", 0
-error_mess   db "eroor", 10, 0
-
-SECTION .text
-global _main
-extern	_dprintf
-
-_main:
-enter 0, 0
-mov rax, 0x02000005 ;open
-mov rdi, filename
-mov rsi, 202h
-mov rdx, 3ffh
-syscall
-;cmp rax, 0
-;jl error
-mov rdi, 1 ; _dprintf
-mov rsi, txt
-mov rdx, 42
-mov rax, rax
-call _dprintf
-mov r11, rax
-call exit
-
-exit:
-mov rax, 0x02000001 ;exit
-mov rdi, r11
-syscall
-
-error:
-mov rax, 0x02000004 ;write
-mov rdi, 1
-mov rsi, error_mess
-mov rdx, 6
-syscall
-call exit
+%ENDMACRO
+GRACE(∆)
