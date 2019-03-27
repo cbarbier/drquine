@@ -2,25 +2,41 @@
 ;comment1
 ;
 SECTION .data
-fmt    db    ";%1$c;comment1%1$c;%1$cSECTION .data%1$cfmt    db    %2$c%3$s%2$c, 0%1$cSECTION .text%1$cglobal _main%1$cextern	_printf%1$c_main:%1$cpush   rbp%1$ccall   _print%1$cxor    rax, rax%1$ccall   _printf%1$cpop    rbp%1$cret%1$c_print:%1$c;%1$c;comment2%1$c;%1$cmov    rdi, fmt%1$cmov    rsi, 10%1$cmov    rdx, 34%1$cmov    rcx, fmt%1$cret", 0
+filename db "Grace_kid.s", 0
+mode     db "w+", 0
+txt     db "mama it works %u", 0
+error_mess   db "eroor", 10, 0
 
 SECTION .text
 global _main
-extern	_printf
-_main:
-push   rbp
-call   _print
-xor    rax, rax
-call   _printf
-pop    rbp
-ret
-_print:
-;
-;comment2
-;
-mov    rdi, fmt
-mov    rsi, 10
-mov    rdx, 34
-mov    rcx, fmt
-ret
+extern	_dprintf
 
+_main:
+enter 0, 0
+mov rax, 0x02000005 ;open
+mov rdi, filename
+mov rsi, 202h
+mov rdx, 3ffh
+syscall
+;cmp rax, 0
+;jl error
+mov rdi, 1 ; _dprintf
+mov rsi, txt
+mov rdx, 42
+mov rax, rax
+call _dprintf
+mov r11, rax
+call exit
+
+exit:
+mov rax, 0x02000001 ;exit
+mov rdi, r11
+syscall
+
+error:
+mov rax, 0x02000004 ;write
+mov rdi, 1
+mov rsi, error_mess
+mov rdx, 6
+syscall
+call exit
