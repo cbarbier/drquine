@@ -19,6 +19,6 @@
     if (i<0 || !(ptr = fopen(src,"w+")))exit(0);\
     fprintf(ptr, c, 10, 34, c, 92, i);\
     fclose(ptr);\
-    if (i<= 0)exit(0);\
+    if (i<=0)exit(0);\
     system(cmd);}
 FT()
